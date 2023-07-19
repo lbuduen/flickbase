@@ -28,7 +28,7 @@ const Root = () => {
     else {
       dispatch(setLayout(""));
     }
-  }, [location.pathname, dispatch])
+  }, [location.pathname, dispatch]);
 
   useEffect(() => {
     if (notifications) {
@@ -41,7 +41,7 @@ const Root = () => {
         dispatch(clearNotifications());
       }
     }
-  }, [notifications])
+  }, [notifications]);
 
   return (
     <>
