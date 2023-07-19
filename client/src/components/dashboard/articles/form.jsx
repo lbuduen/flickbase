@@ -1,11 +1,11 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 //REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { addArticle } from '../../../store/actions/articles';
+import { addArticle, getArticleById, updateArticle } from '../../../store/actions/articles';
 
 ///ROUTER
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 ///FORMIK
 import { FieldArray, FormikProvider, useFormik } from 'formik';
@@ -33,26 +33,43 @@ import AddIcon from '@mui/icons-material/Add';
 
 
 const ArticleForm = () => {
+  const { articleId } = useParams();
+  const [formData, setFormData] = useState(formValues);
+  const [editorBlur, setEditorBlur] = useState(false);
+  const [editorContent, setEditorContent] = useState(null);
   const articles = useSelector(state => state.articles);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
   const actorsValue = useRef('');
+
+
+  useEffect(() => {
+    async function getArticle() {
+      const article = await dispatch(getArticleById(articleId)).unwrap();
+      setFormData(article);
+      setEditorContent(article.content);
+    }
+    if (articleId) {
+      getArticle();
+    }
+  }, [articleId, dispatch]);
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: formValues,
+    initialValues: formData,
     validationSchema: validation,
     onSubmit: async (values) => {
-      await dispatch(addArticle(values)).unwrap();
-      navigate("/dashboard/articles");
+      if (articleId) {
+        await dispatch(updateArticle({ _id: articleId, article: values })).unwrap();
+      }
+      else {
+        await dispatch(addArticle(values)).unwrap();
+        navigate("/dashboard/articles");
+      }
     }
   });
 
-  const [editorBlur, setEditorBlur] = useState(false);
-
   const handleEditorBlur = (blur) => {
-    console.log(blur);
     setEditorBlur(true);
   }
 
@@ -62,7 +79,7 @@ const ArticleForm = () => {
 
   return (
     <>
-      <AdminTitle title="Add article" />
+      <AdminTitle title={articleId ? "Edit article" : "Add article"} />
       <form className='mt-3 article_form' onSubmit={formik.handleSubmit}>
         <div className="form-group">
           <TextField
@@ -81,6 +98,7 @@ const ArticleForm = () => {
             setEditorBlur={(blur) => handleEditorBlur(blur)}
             onError={formik.errors.content}
             editorBlur={editorBlur}
+            editorContent={editorContent}
           />
           {formik.errors.content || (formik.errors.content && editorBlur) ?
             <FormHelperText error={true}>{formik.errors.content}</FormHelperText>
@@ -195,7 +213,7 @@ const ArticleForm = () => {
           <Button
             variant='contained'
             color='primary'
-            type='submit'>Add article
+            type='submit'>{articleId ? "Edit article" : "Add article"}
           </Button>
         }
       </form>

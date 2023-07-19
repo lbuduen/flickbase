@@ -23,6 +23,7 @@ const router = createBrowserRouter([
           { index: true, element: <DashboardMain /> },
           { path: "articles", element: <AdminArticles /> },
           { path: "articles/add", element: <ArticleForm /> },
+          { path: "articles/edit/:articleId", element: <ArticleForm /> },
           { path: "profile", element: <AdminProfile /> },
         ]
       },
