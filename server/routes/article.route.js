@@ -4,7 +4,8 @@ const ArticleController = require("../controllers/article.controller");
 
 router
   .route("/")
-  .post(auth("createAny", "articles"), ArticleController.createArticle);
+  .post(auth("createAny", "articles"), ArticleController.createArticle)
+  .get(auth("readAny", "articles"), ArticleController.getAllArticles)
 router
   .route("/article/:id")
   .get(auth("readAny", "articles"), ArticleController.getArticleById)

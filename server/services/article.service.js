@@ -69,9 +69,13 @@ const getAllArticles = async (req) => {
   const order = req.query.order || "desc";
   const limit = req.query.limit || 2;
   try {
-    const articles = await Article.find({ status: "public" })
-      .sort([[sortBy, order]])
-      .limit(+limit);
+    let filter = {};
+    if (req.user.role === "user") {
+      filter.status = "draft";
+    }
+    const articles = await Article.find(filter)
+      /* .sort([[sortBy, order]])
+      .limit(+limit); */
     if (!articles) {
       throw new Error("There are no articles yet");
     }
@@ -105,7 +109,7 @@ const paginateAdminArticles = async (req) => {
   const options = {
     page: req.body.page,
     sort: { _id: "desc" },
-    limit
+    limit,
   };
 
   try {
