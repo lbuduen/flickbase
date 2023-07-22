@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
@@ -11,6 +11,7 @@ import '../styles/main.css';
 import Header from "./nav/header";
 import { clearNotifications } from '../store/reducers/notifications';
 import { setLayout } from '../store/reducers/site';
+import { isAuth } from '../store/actions/users'
 import { showToast } from '../utils/tools';
 
 const Root = () => {
@@ -18,6 +19,10 @@ const Root = () => {
   const site = useSelector(state => state.site);
   const dispatch = useDispatch();
   const location = useLocation();
+
+  useLayoutEffect(() => {
+    dispatch(isAuth());
+  }, []);
 
   useEffect(() => {
     const pathname = location.pathname.split("/");
