@@ -9,6 +9,8 @@ import ArticleForm from "./components/dashboard/articles/form";
 import AdminProfile from "./components/dashboard/profile";
 
 import AuthGuard from './hoc/authGuard';
+import Home from "./components/home";
+import Article from "./components/articles/article";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,8 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       { path: "/auth", element: <Auth />, },
+      { path: "/articles/article/:articleId", element: <Article />, },
+      { index: true, element: <Home /> },
       {
         path: "/dashboard",
         element: <AuthGuard><Dashboard /></AuthGuard>,

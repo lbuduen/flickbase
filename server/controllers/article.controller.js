@@ -47,7 +47,7 @@ const ArticleController = {
   async deleteArticleById(req, res, next) {
     try {
       await articleService.deleteArticleById(req.params.id);
-      res.status(httpStatus.OK).json({ok: true});
+      res.status(httpStatus.OK).json({ ok: true });
     } catch (error) {
       res.status(httpStatus.BAD_REQUEST).send(error.message);
       next();

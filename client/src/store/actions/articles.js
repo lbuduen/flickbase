@@ -74,7 +74,7 @@ export const getArticleById = createAsyncThunk(
 
 export const getPaginateArticles = createAsyncThunk(
   "articles/getPaginateArticles",
-  async ({ page = 1, limit = 2, keywords = "" }) => {
+  async ({ page = 1, limit = 4, keywords = "" }) => {
     try {
       const response = await fetch("/api/articles/admin/paginate", {
         method: "POST",
@@ -134,6 +134,47 @@ export const changeArticleStatus = createAsyncThunk(
         throw new Error(await response.text());
       }
       dispatch(successGlobal("Status changed!"));
+      return await response.json();
+    } catch (error) {
+      dispatch(errorGlobal(error.message));
+      throw error;
+    }
+  }
+);
+
+export const getHomeArticles = createAsyncThunk(
+  "articles/getHomeArticles",
+  async (sort) => {
+    try {
+      const response = await fetch("/api/articles/more", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify(sort),
+      });
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+      return {articles: await response.json(), sort};
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getGuestArticleById = createAsyncThunk(
+  "articles/getGuestArticleById",
+  async (_id, { dispatch }) => {
+    try {
+      const response = await fetch(`/api/articles/guest/${_id}`, {
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
       return await response.json();
     } catch (error) {
       dispatch(errorGlobal(error.message));

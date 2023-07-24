@@ -24,7 +24,7 @@ const PaginateComponent = ({ articles, goToPage, handleDeleteModal, handleStatus
                   <td>{art.title}</td>
                   <td>{art.score}</td>
                   <td>
-                    <ButtonGroup aria-label="Basic example">
+                    <ButtonGroup aria-label="Article actions">
                       <LinkContainer to={`/dashboard/articles/edit/${art._id}`}>
                         <Button variant="outline-primary">Edit</Button>
                       </LinkContainer>

@@ -87,7 +87,7 @@ const getAllArticles = async (req) => {
 const getMoreArticles = async (req) => {
   const sortBy = req.body.sortby || "_id";
   const order = req.body.order || "desc";
-  const limit = req.body.limit || 3;
+  const limit = req.body.limit || 4;
   const skip = req.body.skip || 0;
 
   try {
