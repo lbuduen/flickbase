@@ -37,7 +37,7 @@ export const isAuth = createAsyncThunk("users/isAuth", async () => {
       headers: getAuthHeader(),
     });
     if (!response.ok) {
-      throw new Error('Error checking user auth');
+      throw new Error("Error checking user auth");
     }
     const user = await response.json();
     return { data: user, auth: true };
@@ -45,3 +45,28 @@ export const isAuth = createAsyncThunk("users/isAuth", async () => {
     return { data: {}, auth: false };
   }
 });
+
+export const updateProfile = createAsyncThunk(
+  "users/updateProfile",
+  async (data, { dispatch }) => {
+    try {
+      const response = await fetch("/api/users/profile", {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error("Error checking user auth");
+      }
+      const user = await response.json();
+      dispatch(successGlobal("Profile updated!"));
+      return user;
+    } catch (error) {
+      dispatch(errorGlobal(error.message));
+      throw error;
+    }
+  }
+);

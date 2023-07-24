@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { authUser, isAuth } from "../actions/users";
+import { authUser, isAuth, updateProfile } from "../actions/users";
 import { delTokenCookie } from "../../utils/tools";
 
 const DEFAULT_USER_STATE = {
@@ -21,16 +21,16 @@ export const usersSlice = createSlice({
   name: "users",
   initialState: DEFAULT_USER_STATE,
   reducers: {
-    signOut: (state) => {
+    signOut: state => {
       delTokenCookie();
       state.data = DEFAULT_USER_STATE.data;
       state.auth = false;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // AUTH USER
-      .addCase(authUser.pending, (state) => {
+      .addCase(authUser.pending, state => {
         state.loading = true;
       })
       .addCase(authUser.fulfilled, (state, action) => {
@@ -38,11 +38,11 @@ export const usersSlice = createSlice({
         state.data = action.payload.data;
         state.auth = action.payload.auth;
       })
-      .addCase(authUser.rejected, (state) => {
+      .addCase(authUser.rejected, state => {
         state.loading = false;
       })
       //IS AUTH
-      .addCase(isAuth.pending, (state) => {
+      .addCase(isAuth.pending, state => {
         state.loading = true;
       })
       .addCase(isAuth.fulfilled, (state, action) => {
@@ -50,8 +50,12 @@ export const usersSlice = createSlice({
         state.data = { ...state.data, ...action.payload.data };
         state.auth = action.payload.auth;
       })
-      .addCase(isAuth.rejected, (state) => {
+      .addCase(isAuth.rejected, state => {
         state.loading = false;
+      })
+      // UPDATE USER PROFILE
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.data = action.payload;
       });
   },
 });
