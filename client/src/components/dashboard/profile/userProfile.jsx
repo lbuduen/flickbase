@@ -31,7 +31,7 @@ const UserProfile = () => {
         onSubmit={formik.handleSubmit}>
         <div className="form-group">
           <TextField
-            style={{ maxWidth: '100%' }}
+            style={{ width: '100%' }}
             id='firstname'
             label='Enter your firstname'
             variant='outlined'
@@ -41,7 +41,7 @@ const UserProfile = () => {
         </div>
         <div className="form-group">
           <TextField
-            style={{ maxWidth: '100%' }}
+            style={{ width: '100%' }}
             id='lastname'
             label='Enter your lastname'
             variant='outlined'
@@ -51,7 +51,7 @@ const UserProfile = () => {
         </div>
         <div className="form-group">
           <TextField
-            style={{ maxWidth: '100%' }}
+            style={{ width: '100%' }}
             id='age'
             type='number'
             label='Enter your age'

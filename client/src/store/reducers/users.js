@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { authUser, isAuth, updateProfile } from "../actions/users";
+import {
+  authUser,
+  isAuth,
+  updateProfile,
+  updateUserEmail,
+} from "../actions/users";
 import { delTokenCookie } from "../../utils/tools";
 
 const DEFAULT_USER_STATE = {
@@ -56,7 +61,18 @@ export const usersSlice = createSlice({
       // UPDATE USER PROFILE
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.data = action.payload;
-      });
+      })
+      // UPDATE USER EMAIL
+      .addCase(updateUserEmail.pending, state => {
+        state.loading = true;
+      })
+      .addCase(updateUserEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(updateUserEmail.rejected, state => {
+        state.loading = false;
+      })
   },
 });
 

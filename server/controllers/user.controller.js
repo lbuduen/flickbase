@@ -1,5 +1,5 @@
 const httpStatus = require("http-status");
-const { userService, authService } = require("../services");
+const { userService, authService, emailService } = require("../services");
 
 const UserController = {
   async profile(req, res, next) {

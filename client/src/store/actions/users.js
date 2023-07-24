@@ -59,11 +59,36 @@ export const updateProfile = createAsyncThunk(
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error("Error checking user auth");
+        throw new Error("Error updating user profile");
       }
       const user = await response.json();
       dispatch(successGlobal("Profile updated!"));
       return user;
+    } catch (error) {
+      dispatch(errorGlobal(error.message));
+      throw error;
+    }
+  }
+);
+
+export const updateUserEmail = createAsyncThunk(
+  "users/updateUserEmail",
+  async (data, { dispatch }) => {
+    try {
+      const response = await fetch("/api/users/email", {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error("Error updating user email");
+      }
+      const res = await response.json();
+      dispatch(successGlobal("Email updated!"));
+      return res.user;
     } catch (error) {
       dispatch(errorGlobal(error.message));
       throw error;
