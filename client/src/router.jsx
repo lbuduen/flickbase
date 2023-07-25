@@ -11,6 +11,7 @@ import AdminProfile from "./components/dashboard/profile";
 import AuthGuard from './hoc/authGuard';
 import Home from "./components/home";
 import Article from "./components/articles/article";
+import AccountVerify from "./components/auth/verification";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       { path: "/auth", element: <Auth />, },
+      { path: "/verification", element: <AccountVerify />, },
       { path: "/articles/article/:articleId", element: <Article />, },
       { index: true, element: <Home /> },
       {

@@ -31,6 +31,9 @@ export const usersSlice = createSlice({
       state.data = DEFAULT_USER_STATE.data;
       state.auth = false;
     },
+    setVerified: state => {
+      state.data.verified = true;
+    }
   },
   extraReducers: builder => {
     builder
@@ -76,5 +79,5 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { signOut } = usersSlice.actions;
+export const { signOut, setVerified } = usersSlice.actions;
 export default usersSlice.reducer;

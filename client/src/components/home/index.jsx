@@ -26,28 +26,23 @@ const Home = () => {
 
   return (
     <>
-      {articles.loading ?
-        <Loader />
-        :
+      {articles && articles.articles ?
         <>
-          {articles && articles.articles ?
-            <>
-              <Grid spacing={2} className='article_card' container>
-                {
-                  articles.articles.map(art => (
-                    <Grid key={art._id} xs={12} sm={6} lg={3} item>
-                      <ArticleCard article={art} />
-                    </Grid>
-                  ))
-                }
-              </Grid>
-              <Divider className='mt-3 mb-3' />
-              <Button variant='outlined' onClick={getNextArticles}>Load more</Button>
-            </>
-            :
-            <p>There are no public articles at the moment</p>
+          <Grid spacing={2} className='article_card' container>
+            {
+              articles.articles.map(art => (
+                <Grid key={art._id} xs={12} sm={6} lg={3} item>
+                  <ArticleCard article={art} />
+                </Grid>
+              ))
             }
+          </Grid>
+          {articles.loading ? <Loader /> : null}
+          <Divider className='mt-3 mb-3' />
+          <Button variant='outlined' onClick={getNextArticles}>Load more</Button>
         </>
+        :
+        <p>There are no public articles at the moment</p>
       }
     </>
   )

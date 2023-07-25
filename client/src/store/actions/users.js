@@ -2,6 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { successGlobal, errorGlobal } from "../reducers/notifications";
 import { getAuthHeader } from "../../utils/tools";
+import { setVerified } from '../reducers/users';
 
 export const authUser = createAsyncThunk(
   "users/authUser",
@@ -92,6 +93,29 @@ export const updateUserEmail = createAsyncThunk(
     } catch (error) {
       dispatch(errorGlobal(error.message));
       throw error;
+    }
+  }
+);
+
+export const verifyAccount = createAsyncThunk(
+  "users/verifyAccount",
+  async (token, {dispatch, getState}) => {
+    const user = getState().users;
+    try {
+      const response = await fetch(`/api/users/verify?token=${token}`, {
+        headers: getAuthHeader(),
+      });
+      if (!response.ok) {
+        throw new Error("Error checking user auth");
+      }
+      if (user.auth) {
+        dispatch(setVerified());
+      }
+      dispatch(successGlobal("Your account has been verified!"));
+      return await response.json(); //{ email: user.email, verified: true }
+    } catch (error) {
+      dispatch(errorGlobal(error.message));
+      throw error
     }
   }
 );
