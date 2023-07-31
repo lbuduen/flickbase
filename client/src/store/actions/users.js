@@ -35,7 +35,7 @@ export const authUser = createAsyncThunk(
 export const isAuth = createAsyncThunk("users/isAuth", async () => {
   try {
     const response = await fetch("/api/auth/isauth", {
-      headers: getAuthHeader(),
+      headers: {...getAuthHeader()},
     });
     if (!response.ok) {
       throw new Error("Error checking user auth");

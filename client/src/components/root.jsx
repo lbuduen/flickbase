@@ -21,10 +21,7 @@ const Root = () => {
   const location = useLocation();
 
   useLayoutEffect(() => {
-    async function autoLogin() {
-      await dispatch(isAuth()).unwrap();
-    }
-    autoLogin();
+    dispatch(isAuth())
   }, []);
 
   useEffect(() => {
