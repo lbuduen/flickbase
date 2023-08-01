@@ -26,7 +26,7 @@ passport.use("jwt", jwtStrategy);
 
 app.use("/api", routes);
 
-app.use(express.static("client/build"));
+app.use(express.static("client/dist"));
 if (process.env.NODE_ENV === "production") {
   const path = require("path");
   app.get("/*", (req, res) => {
