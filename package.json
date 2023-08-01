@@ -8,7 +8,8 @@
     "server": "nodemon server/server.js",
     "client": "yarn --cwd ./client/ dev",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "yarn --cwd ./client/ build"
   },
   "keywords": [
     "react",
