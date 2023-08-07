@@ -6,7 +6,8 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider';
 
-import { Loader } from '../../utils/tools';
+import topbar from 'topbar';
+
 import ArticleCard from '../../utils/articleCard';
 
 const Home = () => {
@@ -18,6 +19,10 @@ const Home = () => {
       dispatch(getHomeArticles(articles.homeSort));
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    articles.loading ? topbar.show() : topbar.hide()
+  }, [articles.loading])
 
   const getNextArticles = () => {
     const skip = articles.homeSort.skip + articles.homeSort.limit;
@@ -37,7 +42,6 @@ const Home = () => {
               ))
             }
           </Grid>
-          {articles.loading ? <Loader /> : null}
           <Divider className='mt-3 mb-3' />
           <Button variant='outlined' onClick={getNextArticles}>Load more</Button>
         </>

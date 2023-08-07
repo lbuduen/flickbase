@@ -12,7 +12,8 @@ import { FieldArray, FormikProvider, useFormik } from 'formik';
 import { formValues, validation } from './validationSchema'
 
 ///UTILS
-import { errorHelper, AdminTitle, Loader } from '../../../utils/tools';
+import { errorHelper, AdminTitle } from '../../../utils/tools';
+import topbar from 'topbar';
 import WYSIWYG from '../../../utils/wysiwyg';
 
 ///MUI
@@ -53,6 +54,10 @@ const ArticleForm = () => {
       getArticle();
     }
   }, [articleId, dispatch]);
+
+  useEffect(() => {
+    articles.loading ? topbar.show() : topbar.hide()
+  }, [articles.loading])
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -208,7 +213,7 @@ const ArticleForm = () => {
         <Divider className='mt-3 mb-3' />
 
         {articles.loading ?
-          <Loader />
+          null
           :
           <Button
             variant='contained'

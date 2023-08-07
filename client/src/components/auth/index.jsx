@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { errorHelper, Loader } from '../../utils/tools';
+import { errorHelper } from '../../utils/tools';
+import topbar from 'topbar';
 import { authUser } from '../../store/actions/users'
 
 import Box from '@mui/material/Box';
@@ -28,6 +29,10 @@ const Auth = () => {
   }, [notifications]);
 
   useEffect(() => {
+    users.loading ? topbar.show() : topbar.hide()
+  }, [users.loading])
+
+  useEffect(() => {
     if (users.auth) {
       navigate('/dashboard', { replace: true, state: { from: location } });
     }
@@ -48,7 +53,7 @@ const Auth = () => {
     <div className='auth_container'>
       <h1>Authenticate</h1>
       {users.loading ?
-        <Loader />
+        null
         :
         <Box sx={{ '& .MuiTextField-root': { width: '100%', marginTop: '20px' } }} component="form" onSubmit={formik.handleSubmit}>
           <TextField

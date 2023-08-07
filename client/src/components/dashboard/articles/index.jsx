@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getPaginateArticles, deleteArticle, changeArticleStatus } from '../../../store/actions/articles';
 
 import { AdminTitle } from '../../../utils/tools';
+import topbar from 'topbar';
 import PaginateComponent from './paginate';
 
 import { Button, ButtonGroup, ButtonToolbar, FormControl, InputGroup, Modal } from 'react-bootstrap';
@@ -19,6 +20,10 @@ const AdminArticles = () => {
   useEffect(() => {
     dispatch(getPaginateArticles({}));
   }, []);
+
+  useEffect(() => {
+    articles.loading ? topbar.show() : topbar.hide()
+  }, [articles.loading])
 
   /// START PAGINATION COMMANDS
   const go2Page = (page) => {

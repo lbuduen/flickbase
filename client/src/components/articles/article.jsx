@@ -2,9 +2,10 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGuestArticleById } from '../../store/actions/articles'
 
-import { Loader, htmlDecode } from '../../utils/tools';
+import { htmlDecode } from '../../utils/tools';
 import { useEffect } from 'react';
 import ScoreCard from '../../utils/scoreCard';
+import topbar from 'topbar';
 
 const Article = () => {
   const { articleId: id } = useParams();
@@ -13,13 +14,17 @@ const Article = () => {
 
   useEffect(() => {
     dispatch(getGuestArticleById(id));
-  }, [])
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    articles.loading ? topbar.show() : topbar.hide()
+  }, [articles.loading])
 
   return (
     <>
       {
         articles.loading ?
-          <Loader />
+          null
           :
           <div className='article_container'>
             <div
@@ -27,7 +32,7 @@ const Article = () => {
               className='image'></div>
             <h1>{articles.current?.title}</h1>
             <div className="mt-3 content">
-              <div dangerouslySetInnerHTML={{__html: htmlDecode(articles.current?.content)}}></div>
+              <div dangerouslySetInnerHTML={{ __html: htmlDecode(articles.current?.content) }}></div>
             </div>
             <ScoreCard article={articles.current} />
           </div>

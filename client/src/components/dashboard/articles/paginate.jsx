@@ -2,7 +2,6 @@ import { Table, Pagination, Button, ButtonGroup } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import Moment from 'react-moment';
-import { Loader } from '../../../utils/tools';
 
 const PaginateComponent = ({ articles, goToPage, handleDeleteModal, handleStatusChange }) => {
   return (
@@ -65,7 +64,7 @@ const PaginateComponent = ({ articles, goToPage, handleDeleteModal, handleStatus
           </Pagination>
         </>
         :
-        <Loader />
+        null
       }
     </>
   )
