@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { Modal } from 'react-bootstrap';
 
@@ -7,15 +7,20 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import EditIcon from '@mui/icons-material/Edit';
+
 import EmailStepper from "./steppers/email";
+import PasswordForm from "./passwordForm";
 
 const UserCredentials = () => {
   const user = useSelector(state => state.users);
-  const dispatch = useDispatch();
 
   const [emailModal, setEmailModal] = useState(false);
-  const handleClose = () => setEmailModal(false);
-  const handleShow = () => setEmailModal(true);
+  const handleCloseMailModal = () => setEmailModal(false);
+  const handleShowMailModal = () => setEmailModal(true);
+
+  const [passwordModal, setPasswordModal] = useState(false);
+  const handleClosePasswordModal = () => setPasswordModal(false);
+  const handleShowPasswordModal = () => setPasswordModal(true);
 
   return (
     <div>
@@ -29,7 +34,7 @@ const UserCredentials = () => {
             />
           </Grid>
           <Grid item>
-            <EditIcon color="primary" onClick={handleShow} />
+            <EditIcon color="primary" onClick={handleShowMailModal} />
           </Grid>
         </Grid>
         <Grid container spacing={1} alignItems="flex-end" className="mt-2 mb-2">
@@ -41,28 +46,22 @@ const UserCredentials = () => {
             />
           </Grid>
           <Grid item>
-            <EditIcon color="primary" />
+            <EditIcon color="primary" onClick={handleShowPasswordModal} />
           </Grid>
         </Grid>
         <Divider />
       </div>
 
-      <Modal show={emailModal} onHide={handleClose} centered>
+      <Modal show={emailModal} onHide={handleCloseMailModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Update your email</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EmailStepper user={user} closeModal={handleClose} />
+          <EmailStepper user={user} closeModal={handleCloseMailModal} />
         </Modal.Body>
-        <Modal.Footer>
-          {/* <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button> */}
-        </Modal.Footer>
       </Modal>
+
+      <PasswordForm open={passwordModal} handleClose={handleClosePasswordModal} />
     </div>
   )
 }

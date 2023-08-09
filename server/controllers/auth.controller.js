@@ -1,6 +1,7 @@
 const httpStatus = require("http-status");
 const { authService } = require("../services");
 const { emailService } = require("../services");
+const { userService } = require("../services");
 
 const AuthController = {
   async register(req, res, next) {
@@ -36,6 +37,19 @@ const AuthController = {
   },
   async isauth(req, res, next) {
     res.json(req.user);
+  },
+  async checkPassword(req, res, next) {
+    const isValid = await req.user.comparePassword(req.body.password);
+    res.status(httpStatus.OK).send(isValid);
+  },
+  async changePassword(req, res, next) {
+    try {
+      const user = await userService.updateUserPassword(req);
+      res.status(httpStatus.OK).send({ ok: true });
+    } catch (error) {
+      res.status(httpStatus.NOT_FOUND).send(error.message);
+      next();
+    }
   },
 };
 

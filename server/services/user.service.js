@@ -55,6 +55,18 @@ const updateUserEmail = async (req) => {
   } catch (error) {}
 };
 
+const updateUserPassword = async (req) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    user.password = req.body.password;
+    await user.save();
+    return user;
+  } catch (error) {}
+};
+
 const validateToken = (token) => {
   return jwt.verify(token, process.env.DB_SECRET);
 };
@@ -64,5 +76,6 @@ module.exports = {
   findUserById,
   updateUserProfile,
   updateUserEmail,
+  updateUserPassword,
   validateToken,
 };

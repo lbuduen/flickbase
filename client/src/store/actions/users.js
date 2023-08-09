@@ -2,7 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { successGlobal, errorGlobal } from "../reducers/notifications";
 import { getAuthHeader } from "../../utils/tools";
-import { setVerified } from '../reducers/users';
+import { setVerified } from "../reducers/users";
 
 export const authUser = createAsyncThunk(
   "users/authUser",
@@ -35,7 +35,7 @@ export const authUser = createAsyncThunk(
 export const isAuth = createAsyncThunk("users/isAuth", async () => {
   try {
     const response = await fetch("/api/auth/isauth", {
-      headers: {...getAuthHeader()},
+      headers: { ...getAuthHeader() },
     });
     if (!response.ok) {
       throw new Error("Error checking user auth");
@@ -99,7 +99,7 @@ export const updateUserEmail = createAsyncThunk(
 
 export const verifyAccount = createAsyncThunk(
   "users/verifyAccount",
-  async (token, {dispatch, getState}) => {
+  async (token, { dispatch, getState }) => {
     const user = getState().users;
     try {
       const response = await fetch(`/api/users/verify?token=${token}`, {
@@ -115,7 +115,54 @@ export const verifyAccount = createAsyncThunk(
       return await response.json(); //{ email: user.email, verified: true }
     } catch (error) {
       dispatch(errorGlobal(error.message));
-      throw error
+      throw error;
+    }
+  }
+);
+
+export const checkPassword = createAsyncThunk(
+  "users/checkPassword",
+  async (password, {dispatch}) => {
+    try {
+      const response = await fetch("/api/auth/checkPassword", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify({ password }),
+      });
+      if (!response.ok) {
+        throw new Error("Error checking user password");
+      }
+      return await response.text();
+    } catch (error) {
+      dispatch(errorGlobal(error.message));
+      throw error;
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "users/changePassword",
+  async (password, {dispatch}) => {
+    try {
+      const response = await fetch("/api/auth/changePassword", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify({ password }),
+      });
+      if (!response.ok) {
+        throw new Error("Error changing user password");
+      }
+      dispatch(successGlobal("Your password has been changed!"));
+      return;
+    } catch (error) {
+      dispatch(errorGlobal(error.message));
+      throw error;
     }
   }
 );
